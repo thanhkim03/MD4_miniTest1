@@ -18,6 +18,8 @@ import java.util.Optional;
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
+    @Autowired
+    private IProductService productService;
 
     @GetMapping
     public ResponseEntity<Iterable<Category>> findAllCategory() {
@@ -62,5 +64,11 @@ public class CategoryController {
         }
         categoryService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/{id}/products")
+    public ResponseEntity<Iterable<Product>> findProductsByCategory(@PathVariable Optional<String> id) {
+        Optional<Category> categoryOptional = categoryService.findById(Long.valueOf(id.get()));
+        Iterable<Product> products = productService.findAllByCategory(categoryOptional.get());
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

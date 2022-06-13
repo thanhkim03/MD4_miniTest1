@@ -5,15 +5,17 @@ import com.codegym.model.Product;
 import com.codegym.service.IGeneralService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 
 public interface IProductService extends IGeneralService<Product> {
+
+    Iterable<Product> findAllByNameContaining(String name);
+
+    Iterable<Product> findAllByOrderByName();
+
+    Iterable<Product> getTop4();
+
     Iterable<Product> findAllByCategory(Category category);
 
-    Page<Product> findAll(Pageable pageable);
-
-    Page<Product> findAllByNameContaining(String name);
-
-    Page<Product> findAllByOrderByDateTime(Pageable pageable);
-
-    Iterable<Product> findAllByOrderByPrice();
+    Iterable<Product> findByPriceRange(String price1, String price2);
 }

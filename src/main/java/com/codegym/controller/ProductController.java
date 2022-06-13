@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/products")
 public class ProductController {
 
@@ -21,10 +22,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Iterable<Product>> findAllProduct() {
-        List<Product> products = (List<Product>) productService.findAll();
-        if (products.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        Iterable<Product> products = productService.findAll();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
@@ -63,15 +61,25 @@ public class ProductController {
         productService.remove(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping("/{name}")
-    public ResponseEntity<Iterable<Product>> findAllByNameContainingProduct(@PathVariable String name) {
+    @GetMapping("/search")
+    public ResponseEntity<Iterable<Product>> findAllByNameContainingProduct(@RequestParam String name) {
         Iterable<Product> products = productService.findAllByNameContaining(name);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
+    @GetMapping("/getTop4")
+    public ResponseEntity<Iterable<Product>> getTop4() {
+        Iterable<Product> products = productService.getTop4();
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+    @GetMapping("/orderbyname")
+    public ResponseEntity<Iterable<Product>> findAllOrderByName() {
+        Iterable<Product> products = productService.findAllByOrderByName();
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 
-    @GetMapping("/sortByPrice")
-    public ResponseEntity<Iterable<Product>> findAllByOrderByPrice() {
-        Iterable<Product> products = productService.findAllByOrderByPrice();
+    @GetMapping("/findbypricerange/{price1}/{price2}")
+    public ResponseEntity<Iterable<Product>> findAllByPriceRange(@PathVariable String price1, @PathVariable String price2) {
+        Iterable<Product> products = productService.findByPriceRange(price1,price2);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

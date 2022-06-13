@@ -24,8 +24,8 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public void save(Product product) {
-        productRepository.save(product);
+    public Product save(Product product) {
+       return productRepository.save(product);
     }
 
     @Override
@@ -33,28 +33,31 @@ public class ProductService implements IProductService{
         productRepository.deleteById(id);
     }
 
+
+    @Override
+    public Iterable<Product> findAllByNameContaining(String name) {
+        return productRepository.findAllByNameContaining(name);
+    }
+
+    @Override
+    public Iterable<Product> findAllByOrderByName() {
+        return productRepository.findAllByOrderByName();
+    }
+
+
+    @Override
+    public Iterable<Product> getTop4() {
+        return productRepository.getTop4();
+    }
+
     @Override
     public Iterable<Product> findAllByCategory(Category category) {
         return productRepository.findAllByCategory(category);
     }
 
-    @Override
-    public Page<Product> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable);
-    }
 
     @Override
-    public Page<Product> findAllByNameContaining(String name) {
-        return productRepository.findAllByNameContaining(name);
-    }
-
-    @Override
-    public Page<Product> findAllByOrderByDateTime(Pageable pageable) {
-        return productRepository.findAllByOrderByDateTime(pageable);
-    }
-
-    @Override
-    public Iterable<Product> findAllByOrderByPrice() {
-        return productRepository.findAllByOrderByPrice();
+    public Iterable<Product> findByPriceRange(String price1, String price2) {
+        return productRepository.findByPriceRange(price1,price2);
     }
 }
